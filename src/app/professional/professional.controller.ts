@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
 import { ProfessionalService } from './professional.service';
 import { Response } from 'express';
-import { ProfessionalDto } from './dto/professional.dto';
+import { ProfessionalDto } from './dto/create-professional.dto';
 
 @Controller('professional')
 export class ProfessionalController {
