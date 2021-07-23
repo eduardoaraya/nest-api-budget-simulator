@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { BudgetProfessional } from '../../budget/model/budget_professional.entity';
 
 @Entity('professional')
 export class Professional {
@@ -13,4 +14,10 @@ export class Professional {
 
   @Column({ name: 'platform_rate' })
   platformRate: number;
+
+  @OneToMany(
+    () => BudgetProfessional,
+    (budgetProfessional) => budgetProfessional.budget,
+  )
+  budget: BudgetProfessional[];
 }

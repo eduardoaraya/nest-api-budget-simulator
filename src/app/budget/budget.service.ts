@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
+import BudgetInterface from './interfaces/bugdet.interface';
 import { Budget } from './model/budget.entity';
 import { BudgetRepositoryName } from './model/budget.repository';
 import { BudgetProfessional } from './model/budget_professional.entity';
@@ -22,7 +23,7 @@ export class BudgetService {
     return this.budgetRepository.findOne(id);
   }
 
-  async save(budget: Budget): Promise<Budget> {
+  async save(budget: BudgetInterface): Promise<BudgetInterface> {
     return this.budgetRepository.save(budget);
   }
 
