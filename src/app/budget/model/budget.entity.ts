@@ -5,6 +5,7 @@ import {
   OneToOne,
   OneToMany,
 } from 'typeorm';
+import ProfessionalInterface from '../../professional/interfaces/professional.interface';
 import { User } from '../../user/model/user.entity';
 import BudgetProfessionalInterface from '../interfaces/budget_profesional.interface';
 import BudgetInterface from '../interfaces/bugdet.interface';
@@ -14,9 +15,6 @@ import { BudgetProfessional } from './budget_professional.entity';
 export class Budget implements BudgetInterface {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ name: 'name' })
-  name: string;
 
   @OneToOne(() => User)
   @Column({ name: 'user_id' })
@@ -31,12 +29,6 @@ export class Budget implements BudgetInterface {
   @Column({ name: 'amount_days' })
   amountDays: number;
 
-  @Column({ name: 'status' })
+  @Column({ name: 'status', default: 'active' })
   status: string;
-
-  @OneToMany(
-    () => BudgetProfessional,
-    (budgetProfessional) => budgetProfessional.professional,
-  )
-  professionals: BudgetProfessionalInterface[];
 }

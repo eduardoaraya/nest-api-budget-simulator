@@ -6,6 +6,7 @@ import { ProfessionalController } from './professional.controller';
 
 @Module({
   imports: [DatabaseModule],
+  exports: [ProfessionalService],
   providers: [ProfessionalRepository, ProfessionalService],
   controllers: [ProfessionalController],
 })

@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   OneToOne,
+  JoinTable,
 } from 'typeorm';
 import ProfessionalInterface from '../../professional/interfaces/professional.interface';
 import { Professional } from '../../professional/model/professional.entity';
@@ -16,9 +17,6 @@ export class BudgetProfessional implements BudgetProfessionalInterface {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'name' })
-  name: string;
-
   @Column({ name: 'budget_id' })
   budgetId: number;
 
@@ -27,10 +25,4 @@ export class BudgetProfessional implements BudgetProfessionalInterface {
 
   @Column({ name: 'amount' })
   amount: number;
-
-  @ManyToOne(() => Budget, (budget) => budget.professionals)
-  budget: BudgetInterface;
-
-  @OneToOne(() => Professional, (profesionalEnity) => profesionalEnity.budget)
-  professional: ProfessionalInterface;
 }

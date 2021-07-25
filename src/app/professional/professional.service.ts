@@ -15,6 +15,10 @@ export class ProfessionalService {
     return this.professionalRepository.find();
   }
 
+  async findByIds(ids: number[]) {
+    return this.professionalRepository.findByIds(ids);
+  }
+
   async find(id: number): Promise<Professional | null> {
     return this.professionalRepository.findOne(id);
   }

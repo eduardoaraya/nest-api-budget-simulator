@@ -3,7 +3,6 @@ import BudgetInterface from './bugdet.interface';
 
 export default interface BudgetProfessionalInterface {
   id?: number;
-  name: string;
   budgetId: number;
   professionalId: number;
   amount: number;
