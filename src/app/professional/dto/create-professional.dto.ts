@@ -1,5 +1,5 @@
 import { IsString, IsNumber } from 'class-validator';
-import ProfessionalInterface from '../interfaces/professional.interface';
+import ProfessionalInterface from '../interface/professional.interface';
 
 export class ProfessionalDto implements ProfessionalInterface {
   @IsString()

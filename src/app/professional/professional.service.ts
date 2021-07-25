@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import ProfessionalInterface from './interfaces/professional.interface';
+import ProfessionalInterface from './interface/professional.interface';
 import { Professional } from './model/professional.entity';
 import { ProfessionalRepositoryName } from './model/professional.repository';
 
@@ -13,6 +13,10 @@ export class ProfessionalService {
 
   async findAll(): Promise<ProfessionalInterface[]> {
     return this.professionalRepository.find();
+  }
+
+  async findByIds(ids: number[]) {
+    return this.professionalRepository.findByIds(ids);
   }
 
   async find(id: number): Promise<Professional | null> {

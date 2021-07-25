@@ -1,7 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import UserInterface from '../interface/user.interface';
 
 @Entity('user')
-export class User {
+export class User implements UserInterface {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -14,7 +15,7 @@ export class User {
   @Column({ name: 'password_hash' })
   password: string;
 
-  @Column({ name: 'password_remember_token' })
+  @Column({ name: 'password_remember_token', nullable: true })
   passwordRememberToken: string;
 
   @Column({ name: 'cpf' })
@@ -30,7 +31,7 @@ export class User {
   companyName: string;
 
   @Column({ name: 'address_zipcode' })
-  addressZipCode: string;
+  addressZipcode: string;
 
   @Column({ name: 'address_street' })
   addressStreet: string;
