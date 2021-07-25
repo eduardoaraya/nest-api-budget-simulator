@@ -1,4 +1,4 @@
-import ProfessionalInterface from '../../professional/interfaces/professional.interface';
+import ProfessionalInterface from '../../professional/interface/professional.interface';
 import BudgetInterface from './bugdet.interface';
 
 export default interface BudgetProfessionalInterface {

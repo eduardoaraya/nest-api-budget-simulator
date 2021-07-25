@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import ProfessionalInterface from '../professional/interfaces/professional.interface';
+import ProfessionalInterface from '../professional/interface/professional.interface';
 import { ProfessionalService } from '../professional/professional.service';
 import BudgetInterface, {
   ProfessionalsRequestInterface,
-} from './interfaces/bugdet.interface';
+} from './interface/bugdet.interface';
 import { Budget } from './model/budget.entity';
 import { BudgetRepositoryName } from './model/budget.repository';
 import { BudgetProfessional } from './model/budget_professional.entity';

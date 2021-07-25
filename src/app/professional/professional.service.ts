@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import ProfessionalInterface from './interfaces/professional.interface';
+import ProfessionalInterface from './interface/professional.interface';
 import { Professional } from './model/professional.entity';
 import { ProfessionalRepositoryName } from './model/professional.repository';
 

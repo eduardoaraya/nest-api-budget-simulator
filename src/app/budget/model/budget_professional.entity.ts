@@ -1,16 +1,5 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToOne,
-  JoinTable,
-} from 'typeorm';
-import ProfessionalInterface from '../../professional/interfaces/professional.interface';
-import { Professional } from '../../professional/model/professional.entity';
-import BudgetProfessionalInterface from '../interfaces/budget_profesional.interface';
-import BudgetInterface from '../interfaces/bugdet.interface';
-import { Budget } from './budget.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import BudgetProfessionalInterface from '../interface/budget_profesional.interface';
 
 @Entity('budget_professional')
 export class BudgetProfessional implements BudgetProfessionalInterface {
