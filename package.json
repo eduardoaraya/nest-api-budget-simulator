@@ -5,7 +5,7 @@
    "description": "Nest TypeScript starter repository",
    "license": "MIT",
    "scripts": {
-      "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm",
+      "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -f ./src/database/db.config.ts",
       "prebuild": "rimraf dist",
       "build": "nest build",
       "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
