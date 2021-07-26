@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import ProfessionalInterface from '../professional/interface/professional.interface';
 import { ProfessionalService } from '../professional/professional.service';
 import BudgetInterface, {
   ProfessionalsRequestInterface,
@@ -39,9 +38,9 @@ export class BudgetService {
   }
 
   async save(
+    userId: number,
     amountDays: number,
     professionals: ProfessionalsRequestInterface[],
-    userId: number,
   ): Promise<BudgetInterface> {
     let budget: BudgetInterface = new Budget();
     budget.userId = userId;

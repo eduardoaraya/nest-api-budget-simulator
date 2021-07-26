@@ -35,9 +35,9 @@ export class BudgetController {
     }
 
     const budget = await this.budgetService.save(
+      userId,
       amountDays,
       professionals,
-      userId,
     );
 
     return res.status(HttpStatus.CREATED).json({ budget });

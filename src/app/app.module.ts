@@ -14,6 +14,7 @@ import { BudgetsModule } from './budget/budget.module';
     AuthModule,
     ProfessionalModule,
     BudgetsModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
