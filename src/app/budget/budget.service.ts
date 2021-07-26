@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import ProfessionalInterface from '../professional/interface/professional.interface';
 import { ProfessionalService } from '../professional/professional.service';
 import BudgetInterface, {
   ProfessionalsRequestInterface,
@@ -10,9 +9,9 @@ import { BudgetRepositoryName } from './model/budget.repository';
 import { BudgetProfessional } from './model/budget_professional.entity';
 import { BudgetProfessionalRepositoryName } from './model/budget_professional.repository';
 
-const TOTAL_PER_DAY = 200;
 @Injectable()
 export class BudgetService {
+  private readonly TOTAL_PER_DAY = 20000;
   constructor(
     @Inject(BudgetRepositoryName)
     private budgetRepository: Repository<Budget>,
@@ -23,6 +22,10 @@ export class BudgetService {
 
   async findAll(): Promise<Budget[]> {
     return this.budgetRepository.find();
+  }
+
+  async findAllById(userId): Promise<Budget[]> {
+    return this.budgetRepository.find({ userId });
   }
 
   async find(id: number): Promise<Budget | null> {
@@ -39,15 +42,15 @@ export class BudgetService {
   }
 
   async save(
+    userId: number,
     amountDays: number,
     professionals: ProfessionalsRequestInterface[],
-    userId: number,
   ): Promise<BudgetInterface> {
     let budget: BudgetInterface = new Budget();
     budget.userId = userId;
     budget.amountDays = amountDays;
     budget.total = await this.calcTotal(professionals, amountDays);
-    budget.totalPerDay = TOTAL_PER_DAY;
+    budget.totalPerDay = this.TOTAL_PER_DAY;
     budget = await this.budgetRepository.save(budget);
     await this.createRelationProfessional(professionals, budget);
     return budget;
@@ -75,7 +78,7 @@ export class BudgetService {
     );
     return (
       calcAllProfessioanls.reduce((total, current) => total + current, 0) +
-      TOTAL_PER_DAY * amountDays
+      this.TOTAL_PER_DAY * amountDays
     );
   }
 }

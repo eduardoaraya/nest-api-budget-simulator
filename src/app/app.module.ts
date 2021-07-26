@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ProfessionalModule } from './professional/professional.module';
 import { BudgetsModule } from './budget/budget.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -13,6 +14,7 @@ import { BudgetsModule } from './budget/budget.module';
     AuthModule,
     ProfessionalModule,
     BudgetsModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
