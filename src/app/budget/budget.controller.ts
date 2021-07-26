@@ -1,8 +1,19 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { BudgetService } from './budget.service';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import CreateBudgetDto from './dto/create-budget.dto';
 import { ProfessionalService } from '../professional/professional.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AuthRequestPayload } from '../auth/interface/auth.interface';
 @Controller('budget')
 export class BudgetController {
   constructor(
@@ -10,14 +21,23 @@ export class BudgetController {
     private professionalService: ProfessionalService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get('list')
-  async getList(@Res() res: Response) {
-    return res.status(HttpStatus.OK).json(await this.budgetService.findAll());
+  async getList(@Req() req: Request, @Res() res: Response) {
+    const { userId } = req.user as AuthRequestPayload;
+    return res
+      .status(HttpStatus.OK)
+      .json(await this.budgetService.findAllById(userId));
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('create')
-  async create(@Body() createBudgetDto: CreateBudgetDto, @Res() res: Response) {
-    const userId = 1,
+  async create(
+    @Body() createBudgetDto: CreateBudgetDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    const { userId } = req.user as AuthRequestPayload,
       { professionals, amountDays } = createBudgetDto;
 
     const entityProfessionals = await Promise.all(
