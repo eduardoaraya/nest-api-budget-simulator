@@ -16,7 +16,7 @@ export class AuthService {
   }
 
   async matchPassword(user: UserInterface, password: string) {
-    return await comparePassword(user.password, password);
+    return await comparePassword(password, user.password);
   }
 
   async auth(email: string, password: string): Promise<string> {
@@ -24,7 +24,7 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException();
     }
-    if (await this.matchPassword(user, password)) {
+    if (!(await this.matchPassword(user, password))) {
       throw new UnauthorizedException();
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
