@@ -25,7 +25,11 @@ export class BudgetService {
   }
 
   async findAllById(userId): Promise<Budget[]> {
-    return this.budgetRepository.find({ userId });
+    return this.budgetRepository
+      .createQueryBuilder('budget')
+      .addOrderBy('budget.id', 'DESC')
+      .where({ userId })
+      .getMany();
   }
 
   async find(id: number): Promise<Budget | null> {

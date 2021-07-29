@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  UpdateDateColumn,
+  CreateDateColumn,
+} from 'typeorm';
 import UserInterface from '../interface/user.interface';
 
 @Entity('user')
@@ -50,4 +56,10 @@ export class User implements UserInterface {
 
   @Column({ name: 'address_district' })
   addressDistrict: string;
+
+  @CreateDateColumn()
+  createdAt: string;
+
+  @UpdateDateColumn()
+  updatedAt: string;
 }

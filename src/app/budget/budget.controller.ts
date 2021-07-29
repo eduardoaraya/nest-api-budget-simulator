@@ -46,7 +46,7 @@ export class BudgetController {
       }),
     );
 
-    if (entityProfessionals.includes(undefined)) {
+    if (!professionals.length || entityProfessionals.includes(undefined)) {
       return res.status(HttpStatus.BAD_REQUEST).json({
         statusCode: HttpStatus.BAD_REQUEST,
         message: 'Not found Professional in request.',
@@ -61,5 +61,35 @@ export class BudgetController {
     );
 
     return res.status(HttpStatus.CREATED).json({ budget });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('simulate')
+  async simulate(
+    @Body() createBudgetDto: CreateBudgetDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    const { professionals, amountDays } = createBudgetDto;
+
+    const entityProfessionals = await Promise.all(
+      professionals.map(async (item) => {
+        return await this.professionalService.find(item.id);
+      }),
+    );
+
+    if (!professionals.length || entityProfessionals.includes(undefined)) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'Not found Professional in request.',
+        error: 'Bad Request!',
+      });
+    }
+
+    const total = await this.budgetService.calcTotal(professionals, amountDays);
+
+    return res
+      .status(HttpStatus.CREATED)
+      .json({ total: (total / 100).toFixed(2).replace('.', ',') });
   }
 }

@@ -27,8 +27,13 @@ export class AuthService {
     if (!(await this.matchPassword(user, password))) {
       throw new UnauthorizedException();
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _pass, ...data } = user;
+    const {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      password: _pass,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      passwordRememberToken: _passRemeber,
+      ...data
+    } = user;
     return this.jwtService.sign(data);
   }
 }

@@ -1,4 +1,10 @@
-import { IsArray, IsNumber } from 'class-validator';
+import {
+  IsArray,
+  IsNumber,
+  ArrayNotEmpty,
+  IsNotEmpty,
+  Min,
+} from 'class-validator';
 import {
   BudgetRequestInterface,
   ProfessionalsRequestInterface,
@@ -6,8 +12,11 @@ import {
 
 export default class CreateBudgetDto implements BudgetRequestInterface {
   @IsArray()
+  @ArrayNotEmpty()
   professionals: ProfessionalsRequestInterface[];
 
   @IsNumber()
+  @IsNotEmpty()
+  @Min(1)
   amountDays: number;
 }
