@@ -1,8 +1,20 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import CreateUserDto from './dto/create-user.dto';
 import { User } from './model/user.entity';
 import { UserService } from './user.service';
-import { Response } from 'express';
+import { Response, Request } from 'express';
+import UpdateUserDto from './dto/update-user.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AuthRequestPayload } from '../auth/interface/auth.interface';
 
 @Controller('user')
 export class UserController {
@@ -37,6 +49,34 @@ export class UserController {
       });
     }
     await this.userService.save(user);
+    return res.status(HttpStatus.CREATED).json({
+      success: true,
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('update')
+  public async update(
+    @Body() user: UpdateUserDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    const { userId } = req.user as AuthRequestPayload;
+    if (await this.userService.findByEmail(user.email, userId)) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'There is already a user with this email registered',
+        error: 'Bad Request',
+      });
+    }
+    if (await this.userService.findByCpf(user.cpf, userId)) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'There is already a user with this CPF registered',
+        error: 'Bad Request',
+      });
+    }
+    await this.userService.update(userId, user);
     return res.status(HttpStatus.CREATED).json({
       success: true,
     });

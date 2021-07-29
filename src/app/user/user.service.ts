@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { UserRepositoryName } from './model/user.repository';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { User } from './model/user.entity';
 import UserInterface from './interface/user.interface';
 import { generatePassword } from './model/hash.provider';
@@ -24,11 +24,33 @@ export class UserService {
     return this.userRepository.findOne(id);
   }
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(
+    email: string,
+    userId: null | number = null,
+  ): Promise<User | null> {
+    if (userId) {
+      return this.userRepository.findOne({
+        where: {
+          id: Not(userId),
+          email,
+        },
+      });
+    }
     return this.userRepository.findOne({ email });
   }
 
-  async findByCpf(cpf: string): Promise<User | null> {
+  async findByCpf(
+    cpf: string,
+    userId: null | number = null,
+  ): Promise<User | null> {
+    if (userId) {
+      return this.userRepository.findOne({
+        where: {
+          id: Not(userId),
+          cpf,
+        },
+      });
+    }
     return this.userRepository.findOne({ cpf });
   }
 
@@ -37,6 +59,11 @@ export class UserService {
       ...user,
       password: await generatePassword(user.password),
     });
+  }
+
+  async update(userId: number, userData: UserInterface): Promise<User> {
+    await this.userRepository.update(userId, userData);
+    return await this.userRepository.findOne(userId);
   }
 
   async delete(user: User): Promise<boolean> {
