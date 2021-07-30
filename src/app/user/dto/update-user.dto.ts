@@ -1,25 +1,17 @@
 import {
+  IsNumber,
   IsString,
   MaxLength,
   MinLength,
   IsEmail,
-  IsNumberString,
 } from 'class-validator';
 
-export default class CreateUserDto {
+export default class UpdateUserDto {
   @IsString()
   name: string;
 
   @IsEmail()
   email: string;
-
-  @MinLength(6)
-  @IsString()
-  password: string;
-
-  @MinLength(6)
-  @IsString()
-  passwordConfirmation: string;
 
   @MinLength(11)
   @MaxLength(11)
@@ -43,7 +35,7 @@ export default class CreateUserDto {
   @IsString()
   addressStreet: string;
 
-  @IsNumberString()
+  @IsNumber()
   addressNumber: number;
 
   @IsString()

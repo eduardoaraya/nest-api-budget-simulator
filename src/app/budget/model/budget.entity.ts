@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { User } from '../../user/model/user.entity';
 import BudgetInterface from '../interface/bugdet.interface';
 
@@ -22,4 +29,10 @@ export class Budget implements BudgetInterface {
 
   @Column({ name: 'status', default: 'active' })
   status: string;
+
+  @CreateDateColumn()
+  createdAt: string;
+
+  @UpdateDateColumn()
+  updatedAt: string;
 }

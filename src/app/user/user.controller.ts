@@ -1,12 +1,29 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import CreateUserDto from './dto/create-user.dto';
 import { User } from './model/user.entity';
 import { UserService } from './user.service';
-import { Response } from 'express';
+import { Response, Request } from 'express';
+import UpdateUserDto from './dto/update-user.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AuthRequestPayload } from '../auth/interface/auth.interface';
+import { AuthService } from '../auth/auth.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+  ) {}
 
   @Get('list')
   public async list(): Promise<User[]> {
@@ -36,7 +53,40 @@ export class UserController {
         error: 'Bad Request',
       });
     }
-    await this.userService.save(user);
+    const {
+      passwordRememberToken: _passwRembemr,
+      password: _passw,
+      ...userCreated
+    } = await this.userService.save(user);
+    return res.status(HttpStatus.CREATED).json({
+      success: true,
+      token: await this.authService.generateToken(userCreated),
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('update')
+  public async update(
+    @Body() user: UpdateUserDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    const { userId } = req.user as AuthRequestPayload;
+    if (await this.userService.findByEmail(user.email, userId)) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'There is already a user with this email registered',
+        error: 'Bad Request',
+      });
+    }
+    if (await this.userService.findByCpf(user.cpf, userId)) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'There is already a user with this CPF registered',
+        error: 'Bad Request',
+      });
+    }
+    await this.userService.update(userId, user);
     return res.status(HttpStatus.CREATED).json({
       success: true,
     });

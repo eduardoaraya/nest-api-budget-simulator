@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import BudgetProfessionalInterface from '../interface/budget_profesional.interface';
 
 @Entity('budget_professional')
@@ -14,4 +20,10 @@ export class BudgetProfessional implements BudgetProfessionalInterface {
 
   @Column({ name: 'amount' })
   amount: number;
+
+  @CreateDateColumn()
+  createdAt: string;
+
+  @UpdateDateColumn()
+  updatedAt: string;
 }
