@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Body,
   Controller,
@@ -15,10 +16,14 @@ import { Response, Request } from 'express';
 import UpdateUserDto from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AuthRequestPayload } from '../auth/interface/auth.interface';
+import { AuthService } from '../auth/auth.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+  ) {}
 
   @Get('list')
   public async list(): Promise<User[]> {
@@ -48,9 +53,14 @@ export class UserController {
         error: 'Bad Request',
       });
     }
-    await this.userService.save(user);
+    const {
+      passwordRememberToken: _passwRembemr,
+      password: _passw,
+      ...userCreated
+    } = await this.userService.save(user);
     return res.status(HttpStatus.CREATED).json({
       success: true,
+      token: await this.authService.generateToken(userCreated),
     });
   }
 

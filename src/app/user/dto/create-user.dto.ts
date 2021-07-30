@@ -1,9 +1,9 @@
 import {
-  IsNumber,
   IsString,
   MaxLength,
   MinLength,
   IsEmail,
+  IsNumberString,
 } from 'class-validator';
 
 export default class CreateUserDto {
@@ -43,7 +43,7 @@ export default class CreateUserDto {
   @IsString()
   addressStreet: string;
 
-  @IsNumber()
+  @IsNumberString()
   addressNumber: number;
 
   @IsString()

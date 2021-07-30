@@ -34,6 +34,10 @@ export class AuthService {
       passwordRememberToken: _passRemeber,
       ...data
     } = user;
-    return this.jwtService.sign(data);
+    return this.generateToken(data);
+  }
+
+  async generateToken(data): Promise<string> {
+    return await this.jwtService.sign(data);
   }
 }
